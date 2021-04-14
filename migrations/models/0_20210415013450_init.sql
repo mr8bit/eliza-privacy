@@ -1,0 +1,27 @@
+-- upgrade --
+CREATE TABLE IF NOT EXISTS "user" (
+    "id" UUID NOT NULL  PRIMARY KEY,
+    "email" VARCHAR(100) NOT NULL UNIQUE,
+    "password" VARCHAR(100) NOT NULL,
+    "first_name" VARCHAR(100) NOT NULL,
+    "last_name" VARCHAR(100),
+    "date_join" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,
+    "last_login" TIMESTAMPTZ,
+    "is_active" BOOL NOT NULL  DEFAULT False,
+    "is_staff" BOOL NOT NULL  DEFAULT False,
+    "is_superuser" BOOL NOT NULL  DEFAULT False
+);
+COMMENT ON TABLE "user" IS 'Model user ';
+CREATE TABLE IF NOT EXISTS "token" (
+    "id" SERIAL NOT NULL PRIMARY KEY,
+    "created" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,
+    "key" VARCHAR(40) NOT NULL  DEFAULT 'd0dad6ff1897264474f0b996646ee35a16432aee',
+    "user_id" UUID NOT NULL UNIQUE REFERENCES "user" ("id") ON DELETE CASCADE
+);
+COMMENT ON TABLE "token" IS 'Model user ';
+CREATE TABLE IF NOT EXISTS "aerich" (
+    "id" SERIAL NOT NULL PRIMARY KEY,
+    "version" VARCHAR(255) NOT NULL,
+    "app" VARCHAR(20) NOT NULL,
+    "content" JSONB NOT NULL
+);

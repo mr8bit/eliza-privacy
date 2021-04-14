@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+
+  postgres:
+    restart: always
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    env_file:
+      - ./.env.dev
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data/
+
+volumes:
+  postgres_volume:
